@@ -1,0 +1,186 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+    color: #000;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+h1 {
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 40px;
+    margin-top: 0;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 30px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+p {
+    text-align: justify;
+    font-size: 11pt;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 9pt;
+}
+
+caption {
+    caption-side: top;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 10pt;
+}
+
+th {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+td {
+    padding: 2px 4px;
+    text-align: center;
+    border: none;
+    line-height: 1.2;
+}
+
+tr:last-child td {
+    border-bottom: 1px solid #000;
+}
+
+.heatmap-cell {
+    color: #000;
+    font-weight: bold;
+    border: 1px solid #fff;
+}
+
+.source {
+    font-size: 8pt;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.footer {
+    text-align: center;
+    font-size: 9pt;
+    margin-top: 50px;
+    color: #666;
+}
+
+.calibration-plot {
+    width: 30%;
+    display: inline-block;
+    margin: 1%;
+}
+
+/* Tabs */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 16px;
+    transition: 0.3s;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Specific Classes for Tabs */
+.content-dist,
+.content-drivers,
+.content-calib,
+.content-elast {
+    display: none;
+    padding: 20px 0;
+}
+
+/* Iframes */
+iframe {
+    border: none;
+    width: 100%;
+}
+
+.flex-charts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Navigation (Added for split files) */
+nav {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 10pt;
+    background: #f1f1f1;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+nav a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
