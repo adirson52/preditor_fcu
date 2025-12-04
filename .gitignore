@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+.vscode/
+.idea/
+# Ignorar logs brutos se forem copiados acidentalmente
+log_v3_*/
+output_final/
+comparativo_avancado/

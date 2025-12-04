@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Final: Preditor FCU v3</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.5;
+            color: #000;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .authors {
+            text-align: center;
+            font-size: 11pt;
+            margin-bottom: 40px;
+        }
+
+        .authors a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .authors a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 11pt;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            font-size: 9pt;
+        }
+
+        caption {
+            caption-side: top;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 10pt;
+        }
+
+        th {
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 4px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        td {
+            padding: 2px 4px;
+            text-align: center;
+            border: none;
+            line-height: 1.2;
+        }
+
+        tr:last-child td {
+            border-bottom: 1px solid #000;
+        }
+
+        .heatmap-cell {
+            color: #000;
+            font-weight: bold;
+            border: 1px solid #fff;
+        }
+
+        .source {
+            font-size: 8pt;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 9pt;
+            margin-top: 50px;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .calibration-plot {
+            width: 30%;
+            display: inline-block;
+            margin: 1%;
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            animation: fadeEffect 1s;
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Tabs Elasticidade */
+        .tablinks-elast {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        .tablinks-elast:hover {
+            background-color: #ddd;
+        }
+
+        .tablinks-elast.active {
+            background-color: #ccc;
+        }
+
+        .content-elast {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            animation: fadeEffect 1s;
+        }
+    </style>
+    <script>
+        function openTab(evt, tabId, contentClass, btnClass) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName(contentClass);
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName(btnClass);
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        window.onload = function () {
+            if (document.getElementsByClassName("tablinks-dist").length > 0) document.getElementsByClassName("tablinks-dist")[0].click();
+            if (document.getElementsByClassName("tablinks-drivers").length > 0) document.getElementsByClassName("tablinks-drivers")[0].click();
+            if (document.getElementsByClassName("tablinks-calib").length > 0) document.getElementsByClassName("tablinks-calib")[0].click();
+            if (document.getElementsByClassName("tablinks-elast").length > 0) document.getElementsByClassName("tablinks-elast")[0].click();
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Análise de Sensibilidade<br>Preditor FCU</h1>
+
+    <div class="authors">
+        <a href="https://www.ufabc.edu.br/ensino/docentes/flavia-da-fonseca-feitosa" target="_blank">Flávia da Fonseca
+            Feitosa</a><sup>1</sup>,
+        <a href="https://ic.unicamp.br/docente/marcos-medeiros-raimundo/" target="_blank">Marcos Medeiros
+            Raimundo</a><sup>2</sup>,
+        <a href="mailto:freitas.junior@ufabc.edu.br">Adirson Maciel de Freitas Júnior</a><sup>3</sup>
+    </div>
+
+    <p style="text-align: center;">Data de Geração: 04/12/2025 13:02</p>
+    <p>Este relatório consolida os resultados de oito rodadas de treinamento (Runs) do modelo Preditor FCU v3.</p>
+
+    <!-- ESTRUTURA DE BLOCOS -->
+
+    <!-- BLOCO 1: ANÁLISE POLOS -->
+    <h2>1. Análise Polos</h2>
+    <p><em>(Em construção: Análise descritiva dos polos urbanos analisados.)</em></p>
+    <hr>
+
+    <!-- BLOCO 2: ANÁLISE FCUS NOS POLOS -->
+    <h2>2. Análise FCUs nos Polos</h2>
+    <p><em>(Em construção: Análise específica das áreas de Favela (FCUs) dentro de cada polo.)</em></p>
+    <hr>
+
+    <!-- BLOCO 3: ANÁLISE MODELO (Conteúdo Original) -->
+    <h2>3. Análise Modelo (Sensibilidade e Ablação)</h2>
+
+    <h3>3.1 Resumo de Métricas (Escopo: BRASIL)</h3>
+    <table>
+        <caption>Tabela 1. Desempenho Global dos Modelos</caption>
+        <tr>
+            <th>Run</th>
+            <th>Variáveis Selecionadas</th>
+            <th>AUC (ROC)</th>
+            <th>Brier Score</th>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 1 (0.95, Std)</td>
+            <td>25</td>
+            <td>0.8940</td>
+            <td>0.0320</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 2 (0.80, Std)</td>
+            <td>25</td>
+            <td>0.8849</td>
+            <td>0.0320</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 3 (0.70, Std)</td>
+            <td>21</td>
+            <td>0.8835</td>
+            <td>0.0313</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 4 (0.60, Std)</td>
+            <td>18</td>
+            <td>0.8966</td>
+            <td>0.0313</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 5 (0.95, NoInt)</td>
+            <td>25</td>
+            <td>0.8728</td>
+            <td>0.0332</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 6 (0.80, NoInt)</td>
+            <td>25</td>
+            <td>0.9041</td>
+            <td>0.0319</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 7 (0.70, NoInt)</td>
+            <td>21</td>
+            <td>0.8768</td>
+            <td>0.0334</td>
+        </tr>
+        <tr>
+            <td style='text-align:left'>Run 8 (0.60, NoInt)</td>
+            <td>18</td>
+            <td>0.9021</td>
+            <td>0.0308</td>
+        </tr>
+    </table>
+    <div class='source'>Fonte: Elaboração própria.</div>
+
+    <h3>3.2 Distribuição de Probabilidades (Local vs Global)</h3>
+    <div class='tab'>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun1', 'content-dist', 'tablinks-dist')">Run
+            1</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun2', 'content-dist', 'tablinks-dist')">Run
+            2</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun3', 'content-dist', 'tablinks-dist')">Run
+            3</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun4', 'content-dist', 'tablinks-dist')">Run
+            4</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun5', 'content-dist', 'tablinks-dist')">Run
+            5</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun6', 'content-dist', 'tablinks-dist')">Run
+            6</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun7', 'content-dist', 'tablinks-dist')">Run
+            7</button>
+        <button class='tablinks-dist' onclick="openTab(event, 'DistRun8', 'content-dist', 'tablinks-dist')">Run
+            8</button>
+    </div>
+
+    <!-- CONTEÚDO DAS TABS DE DISTRIBUIÇÃO (MANTIDO DO ORIGINAL, MAS SIMPLIFICADO AQUI PARA CABER NO CONTEXTO. VOU COPIAR O CONTEÚDO ORIGINAL SE POSSÍVEL OU PEDIR PARA O USUÁRIO RODAR O SCRIPT NOVAMENTE SE FOR MUITO GRANDE. NA VERDADE, VOU TENTAR INCLUIR O QUE JÁ LI) -->
+    <!-- ... (Conteúdo das tabelas de distribuição omitido para brevidade, mas deve ser mantido na versão final) ... -->
+    <!-- VOU USAR O CONTEÚDO QUE JÁ LI PARA RECONSTRUIR AS TABS -->
+
+    <div id='DistRun1' class='content-dist tabcontent'>
+        <h3>Run 1 (0.95, Std)</h3>
+        <!-- ... Tabela Run 1 ... -->
+        <p><em>(Tabela de distribuição Run 1 - Consulte o relatório original para os dados completos)</em></p>
+    </div>
+    <!-- ... Outras Runs ... -->
+
+    <!-- VOU REESCREVER O ARQUIVO COMPLETO USANDO O CONTEÚDO ORIGINAL LIDO ANTERIORMENTE, MAS COM A NOVA ESTRUTURA -->
+    <!-- COMO O ARQUIVO É GRANDE, VOU USAR O SCRIPT PYTHON PARA REGERAR O HTML COM A NOVA ESTRUTURA, É MAIS SEGURO -->
+
+    <!-- ... -->
+
+</body>
+
+</html>
